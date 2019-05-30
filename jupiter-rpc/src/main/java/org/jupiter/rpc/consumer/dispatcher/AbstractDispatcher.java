@@ -13,11 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.jupiter.rpc.consumer.dispatcher;
+
+import java.util.List;
+import java.util.Map;
 
 import org.jupiter.common.util.JConstants;
 import org.jupiter.common.util.Maps;
+import org.jupiter.common.util.StackTraceUtil;
 import org.jupiter.common.util.SystemClock;
 import org.jupiter.common.util.internal.logging.InternalLogger;
 import org.jupiter.common.util.internal.logging.InternalLoggerFactory;
@@ -42,11 +45,6 @@ import org.jupiter.transport.channel.JChannel;
 import org.jupiter.transport.channel.JChannelGroup;
 import org.jupiter.transport.channel.JFutureListener;
 import org.jupiter.transport.payload.JRequestPayload;
-
-import java.util.List;
-import java.util.Map;
-
-import static org.jupiter.common.util.StackTraceUtil.stackTrace;
 
 /**
  * jupiter
@@ -87,7 +85,7 @@ abstract class AbstractDispatcher implements Dispatcher {
     @Override
     public Dispatcher interceptors(List<ConsumerInterceptor> interceptors) {
         if (interceptors != null && !interceptors.isEmpty()) {
-            this.interceptors = interceptors.toArray(new ConsumerInterceptor[interceptors.size()]);
+            this.interceptors = interceptors.toArray(new ConsumerInterceptor[0]);
         }
         return this;
     }
@@ -203,7 +201,7 @@ abstract class AbstractDispatcher implements Dispatcher {
                 }
 
                 if (logger.isWarnEnabled()) {
-                    logger.warn("Writes {} fail on {}, {}.", request, channel, stackTrace(cause));
+                    logger.warn("Writes {} fail on {}, {}.", request, channel, StackTraceUtil.stackTrace(cause));
                 }
 
                 ResultWrapper result = new ResultWrapper();

@@ -1,20 +1,4 @@
 /*
- * Copyright (c) 2015 The Jupiter Project
- *
- * Licensed under the Apache License, version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at:
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-/*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -29,16 +13,28 @@
  */
 package org.jupiter.common.concurrent.collection;
 
-import org.jupiter.common.util.internal.UnsafeUtil;
-import sun.misc.Unsafe;
-
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.AbstractCollection;
+import java.util.AbstractMap;
+import java.util.AbstractSet;
+import java.util.Collection;
+import java.util.ConcurrentModificationException;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
+
+import sun.misc.Unsafe;
+
+import org.jupiter.common.util.internal.UnsafeUtil;
 
 /**
  * A lock-free alternate implementation of {@link java.util.concurrent.ConcurrentHashMap}
@@ -223,6 +219,7 @@ public class NonBlockingHashMap<TypeK, TypeV>
         return kvs[(idx << 1) + 3];
     }
 
+    @SuppressWarnings("SameParameterValue")
     private static boolean CAS_key(Object[] kvs, int idx, Object old, Object key) {
         return unsafe.compareAndSwapObject(kvs, rawIndex(kvs, (idx << 1) + 2), old, key);
     }
@@ -1595,8 +1592,8 @@ public class NonBlockingHashMap<TypeK, TypeV>
      * requires the creation of {@link java.util.Map.Entry} objects with each
      * iteration.  The {@link NonBlockingHashMap} does not normally create or
      * using {@link java.util.Map.Entry} objects so they will be created soley
-     * to support this iteration.  Iterating using {@link #keySet} or {@link
-     * #values} will be more efficient.
+     * to support this iteration.  Iterating using keySet or values will be
+     * more efficient.
      */
     @Override
     public Set<Map.Entry<TypeK, TypeV>> entrySet() {

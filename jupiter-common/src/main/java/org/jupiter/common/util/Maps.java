@@ -13,17 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.jupiter.common.util;
 
-import org.jupiter.common.concurrent.collection.NonBlockingHashMap;
-import org.jupiter.common.concurrent.collection.NonBlockingHashMapLong;
-
-import java.util.*;
+import java.util.HashMap;
+import java.util.IdentityHashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import static org.jupiter.common.util.Preconditions.checkArgument;
+import org.jupiter.common.concurrent.collection.NonBlockingHashMap;
+import org.jupiter.common.concurrent.collection.NonBlockingHashMapLong;
 
 /**
  * Static utility methods pertaining to {@link Map} instances.
@@ -124,7 +125,7 @@ public final class Maps {
      */
     private static int capacity(int expectedSize) {
         if (expectedSize < 3) {
-            checkArgument(expectedSize >= 0, "expectedSize cannot be negative but was: " + expectedSize);
+            Requires.requireTrue(expectedSize >= 0, "expectedSize cannot be negative but was: " + expectedSize);
             return expectedSize + 1;
         }
         if (expectedSize < Ints.MAX_POWER_OF_TWO) {

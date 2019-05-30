@@ -13,10 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.jupiter.common.util;
-
-import com.sun.management.HotSpotDiagnosticMXBean;
 
 import java.io.File;
 import java.lang.management.ManagementFactory;
@@ -25,6 +22,8 @@ import java.lang.management.MemoryUsage;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import com.sun.management.HotSpotDiagnosticMXBean;
 
 /**
  * Jupiter

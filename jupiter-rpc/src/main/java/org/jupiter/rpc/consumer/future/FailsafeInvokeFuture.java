@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.jupiter.rpc.consumer.future;
 
+import java.util.concurrent.CompletableFuture;
+
 import org.jupiter.common.util.Reflects;
+import org.jupiter.common.util.StackTraceUtil;
 import org.jupiter.common.util.internal.logging.InternalLogger;
 import org.jupiter.common.util.internal.logging.InternalLoggerFactory;
-import org.jupiter.rpc.JListener;
-
-import static org.jupiter.common.util.StackTraceUtil.stackTrace;
+import org.jupiter.rpc.consumer.cluster.FailsafeClusterInvoker;
 
 /**
  * 用于实现fail-safe集群容错方案的 {@link InvokeFuture}.
@@ -31,22 +31,22 @@ import static org.jupiter.common.util.StackTraceUtil.stackTrace;
  * jupiter
  * org.jupiter.rpc.consumer.future
  *
- * @see org.jupiter.rpc.consumer.cluster.FailSafeClusterInvoker
+ * @see FailsafeClusterInvoker
  *
  * @author jiachun.fjc
  */
 @SuppressWarnings("unchecked")
-public class FailSafeInvokeFuture<V> implements InvokeFuture<V> {
+public class FailsafeInvokeFuture<V> extends CompletableFuture<V> implements InvokeFuture<V> {
 
-    private static final InternalLogger logger = InternalLoggerFactory.getInstance(FailSafeInvokeFuture.class);
+    private static final InternalLogger logger = InternalLoggerFactory.getInstance(FailsafeInvokeFuture.class);
 
     private final InvokeFuture<V> future;
 
-    public static <T> FailSafeInvokeFuture<T> with(InvokeFuture<T> future) {
-        return new FailSafeInvokeFuture<>(future);
+    public static <T> FailsafeInvokeFuture<T> with(InvokeFuture<T> future) {
+        return new FailsafeInvokeFuture<>(future);
     }
 
-    private FailSafeInvokeFuture(InvokeFuture<V> future) {
+    private FailsafeInvokeFuture(InvokeFuture<V> future) {
         this.future = future;
     }
 
@@ -61,34 +61,10 @@ public class FailSafeInvokeFuture<V> implements InvokeFuture<V> {
             return future.getResult();
         } catch (Throwable t) {
             if (logger.isWarnEnabled()) {
-                logger.warn("Ignored exception on [Fail-safe]: {}.", stackTrace(t));
+                logger.warn("Ignored exception on [Fail-safe]: {}.", StackTraceUtil.stackTrace(t));
             }
         }
         return (V) Reflects.getTypeDefaultValue(returnType());
-    }
-
-    @Override
-    public InvokeFuture<V> addListener(JListener<V> listener) {
-        future.addListener(listener);
-        return this;
-    }
-
-    @Override
-    public InvokeFuture<V> addListeners(JListener<V>... listeners) {
-        future.addListeners(listeners);
-        return this;
-    }
-
-    @Override
-    public InvokeFuture<V> removeListener(JListener<V> listener) {
-        future.removeListener(listener);
-        return this;
-    }
-
-    @Override
-    public InvokeFuture<V> removeListeners(JListener<V>... listeners) {
-        future.removeListeners(listeners);
-        return this;
     }
 
     public InvokeFuture<V> future() {

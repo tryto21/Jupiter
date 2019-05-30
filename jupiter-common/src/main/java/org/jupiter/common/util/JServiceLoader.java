@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.jupiter.common.util;
 
 import java.io.BufferedReader;
@@ -21,9 +20,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.*;
-
-import static org.jupiter.common.util.Preconditions.checkNotNull;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.ServiceConfigurationError;
 
 /**
  * A simple service-provider loading facility (SPI).
@@ -64,19 +68,15 @@ public final class JServiceLoader<S> implements Iterable<S> {
             return sortList;
         }
 
-        Collections.sort(sortList, new Comparator<S>() {
+        sortList.sort((o1, o2) -> {
+            SpiMetadata o1_spi = o1.getClass().getAnnotation(SpiMetadata.class);
+            SpiMetadata o2_spi = o2.getClass().getAnnotation(SpiMetadata.class);
 
-            @Override
-            public int compare(S o1, S o2) {
-                SpiMetadata o1_spi = o1.getClass().getAnnotation(SpiMetadata.class);
-                SpiMetadata o2_spi = o2.getClass().getAnnotation(SpiMetadata.class);
+            int o1_priority = o1_spi == null ? 0 : o1_spi.priority();
+            int o2_priority = o2_spi == null ? 0 : o2_spi.priority();
 
-                int o1_priority = o1_spi == null ? 0 : o1_spi.priority();
-                int o2_priority = o2_spi == null ? 0 : o2_spi.priority();
-
-                // 优先级高的排前边
-                return o2_priority - o1_priority;
-            }
+            // 优先级高的排前边
+            return o2_priority - o1_priority;
         });
 
         return sortList;
@@ -121,7 +121,7 @@ public final class JServiceLoader<S> implements Iterable<S> {
     }
 
     private JServiceLoader(Class<S> service, ClassLoader loader) {
-        this.service = checkNotNull(service, "service interface cannot be null");
+        this.service = Requires.requireNotNull(service, "service interface cannot be null");
         this.loader = (loader == null) ? ClassLoader.getSystemClassLoader() : loader;
         reload();
     }

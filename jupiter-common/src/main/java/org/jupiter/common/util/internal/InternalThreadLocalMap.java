@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.jupiter.common.util.internal;
-
-import org.jupiter.common.util.SystemPropertyUtil;
 
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import org.jupiter.common.util.SystemPropertyUtil;
 
 /**
  * 利用对象继承的内存布局规则来padding避免false sharing, 注意其中对象头会至少占用8个字节

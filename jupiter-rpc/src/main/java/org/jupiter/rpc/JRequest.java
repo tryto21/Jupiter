@@ -13,15 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.jupiter.rpc;
+
+import java.util.Collections;
+import java.util.Map;
 
 import org.jupiter.rpc.model.metadata.MessageWrapper;
 import org.jupiter.serialization.io.OutputBuf;
 import org.jupiter.transport.payload.JRequestPayload;
-
-import java.util.Collections;
-import java.util.Map;
 
 /**
  * Consumer's request data.
@@ -81,7 +80,7 @@ public class JRequest {
     public Map<String, String> getAttachments() {
         Map<String, String> attachments =
                 message != null ? message.getAttachments() : null;
-        return attachments != null ? attachments : Collections.<String, String>emptyMap();
+        return attachments != null ? attachments : Collections.emptyMap();
     }
 
     public void putAttachment(String key, String value) {

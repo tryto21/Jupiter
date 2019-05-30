@@ -13,14 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.jupiter.serialization.io;
+
+import java.io.ByteArrayOutputStream;
 
 import org.jupiter.common.util.internal.InternalThreadLocal;
 import org.jupiter.common.util.internal.UnsafeReferenceFieldUpdater;
 import org.jupiter.common.util.internal.UnsafeUpdater;
-
-import java.io.ByteArrayOutputStream;
 
 import static org.jupiter.serialization.Serializer.DEFAULT_BUF_SIZE;
 import static org.jupiter.serialization.Serializer.MAX_CACHED_BUF_SIZE;

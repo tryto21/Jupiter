@@ -13,15 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.jupiter.common.util;
-
-import org.jupiter.common.util.internal.UnsafeUtil;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
+
+import org.jupiter.common.util.internal.UnsafeUtil;
 
 /**
  * 利用对象继承的内存布局规则来padding避免false sharing, 注意其中对象头会至少占用8个字节
@@ -83,23 +81,15 @@ public class SystemClock extends RhsTimePadding {
     }
 
     private void scheduleClockUpdating() {
-        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor(new ThreadFactory() {
-
-            @Override
-            public Thread newThread(Runnable runnable) {
-                Thread t = new Thread(runnable, "system.clock");
-                t.setDaemon(true);
-                return t;
-            }
+        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor(runnable -> {
+            Thread t = new Thread(runnable, "system.clock");
+            t.setDaemon(true);
+            return t;
         });
 
-        scheduler.scheduleAtFixedRate(new Runnable() {
-
-            @Override
-            public void run() {
-                // Update the timestamp with ordered semantics.
-                UnsafeUtil.getUnsafe().putOrderedLong(SystemClock.this, NOW_VALUE_OFFSET, System.currentTimeMillis());
-            }
+        scheduler.scheduleAtFixedRate(() -> {
+            // Update the timestamp with ordered semantics.
+            UnsafeUtil.getUnsafe().putOrderedLong(SystemClock.this, NOW_VALUE_OFFSET, System.currentTimeMillis());
         }, precision, precision, TimeUnit.MILLISECONDS);
     }
 

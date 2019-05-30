@@ -13,15 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.jupiter.flight.exec;
+
+import java.io.ByteArrayOutputStream;
+import java.io.Console;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
+import java.nio.channels.Channel;
+import java.util.Properties;
 
 import org.jupiter.common.util.internal.UnsafeReferenceFieldUpdater;
 import org.jupiter.common.util.internal.UnsafeUpdater;
-
-import java.io.*;
-import java.nio.channels.Channel;
-import java.util.Properties;
 
 /**
  * Hack {@link java.lang.System}.
@@ -146,11 +149,6 @@ public class HackSystem {
 
     public static void runFinalization() {
         System.runFinalization();
-    }
-
-    @SuppressWarnings("deprecation")
-    public static void runFinalizersOnExit(boolean value) {
-        System.runFinalizersOnExit(value);
     }
 
     public static void load(String filename) {

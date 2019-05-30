@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.jupiter.rpc;
+
+import java.util.List;
+import java.util.concurrent.Executor;
 
 import org.jupiter.registry.Registry;
 import org.jupiter.registry.RegistryService;
@@ -23,9 +25,6 @@ import org.jupiter.rpc.model.metadata.ServiceWrapper;
 import org.jupiter.rpc.provider.ProviderInterceptor;
 import org.jupiter.transport.Directory;
 import org.jupiter.transport.JAcceptor;
-
-import java.util.List;
-import java.util.concurrent.Executor;
 
 /**
  * The jupiter rpc server.

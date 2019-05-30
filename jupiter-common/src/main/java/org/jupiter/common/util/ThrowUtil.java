@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.jupiter.common.util;
 
-import org.jupiter.common.util.internal.UnsafeUtil;
+import sun.misc.Unsafe;
+
 import org.jupiter.common.util.internal.UnsafeReferenceFieldUpdater;
 import org.jupiter.common.util.internal.UnsafeUpdater;
-import sun.misc.Unsafe;
+import org.jupiter.common.util.internal.UnsafeUtil;
 
 /**
  * jupiter
@@ -40,7 +40,7 @@ public final class ThrowUtil {
         if (unsafe != null) {
             unsafe.throwException(t);
         } else {
-            ThrowUtil.<RuntimeException>throwException0(t);
+            ThrowUtil.throwException0(t);
         }
     }
 

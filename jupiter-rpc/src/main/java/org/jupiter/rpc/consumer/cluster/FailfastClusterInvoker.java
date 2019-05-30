@@ -13,42 +13,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.jupiter.rpc.consumer.cluster;
 
 import org.jupiter.rpc.JRequest;
 import org.jupiter.rpc.consumer.dispatcher.Dispatcher;
-import org.jupiter.rpc.consumer.future.FailSafeInvokeFuture;
 import org.jupiter.rpc.consumer.future.InvokeFuture;
 
 /**
- * 失败安全, 同步调用时发生异常时只打印日志.
+ * 快速失败, 只发起一次调用, 失败立即报错(jupiter缺省设置)
  *
- * 通常用于写入审计日志等操作.
+ * 通常用于非幂等性的写操作.
  *
- * http://en.wikipedia.org/wiki/Fail-safe
+ * https://en.wikipedia.org/wiki/Fail-fast
  *
  * jupiter
  * org.jupiter.rpc.consumer.cluster
  *
  * @author jiachun.fjc
  */
-public class FailSafeClusterInvoker implements ClusterInvoker {
+public class FailfastClusterInvoker implements ClusterInvoker {
 
     private final Dispatcher dispatcher;
 
-    public FailSafeClusterInvoker(Dispatcher dispatcher) {
+    public FailfastClusterInvoker(Dispatcher dispatcher) {
         this.dispatcher = dispatcher;
     }
 
     @Override
     public Strategy strategy() {
-        return Strategy.FAIL_SAFE;
+        return Strategy.FAIL_FAST;
     }
 
     @Override
     public <T> InvokeFuture<T> invoke(JRequest request, Class<T> returnType) throws Exception {
-        InvokeFuture<T> future = dispatcher.dispatch(request, returnType);
-        return FailSafeInvokeFuture.with(future);
+        return dispatcher.dispatch(request, returnType);
     }
 }

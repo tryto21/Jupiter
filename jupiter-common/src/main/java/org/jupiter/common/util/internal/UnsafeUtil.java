@@ -13,13 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.jupiter.common.util.internal;
-
-import org.jupiter.common.util.ThrowUtil;
-import org.jupiter.common.util.internal.logging.InternalLogger;
-import org.jupiter.common.util.internal.logging.InternalLoggerFactory;
-import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
 import java.nio.Buffer;
@@ -27,7 +21,12 @@ import java.nio.ByteBuffer;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 
-import static org.jupiter.common.util.StackTraceUtil.stackTrace;
+import sun.misc.Unsafe;
+
+import org.jupiter.common.util.StackTraceUtil;
+import org.jupiter.common.util.ThrowUtil;
+import org.jupiter.common.util.internal.logging.InternalLogger;
+import org.jupiter.common.util.internal.logging.InternalLoggerFactory;
 
 /**
  * For the {@link sun.misc.Unsafe} access.
@@ -51,7 +50,7 @@ public final class UnsafeUtil {
             _unsafe = (Unsafe) unsafeField.get(null);
         } catch (Throwable t) {
             if (logger.isWarnEnabled()) {
-                logger.warn("sun.misc.Unsafe.theUnsafe: unavailable, {}.", stackTrace(t));
+                logger.warn("sun.misc.Unsafe.theUnsafe: unavailable, {}.", StackTraceUtil.stackTrace(t));
             }
 
             _unsafe = null;
@@ -385,13 +384,7 @@ public final class UnsafeUtil {
         if (System.getSecurityManager() == null) {
             return ClassLoader.getSystemClassLoader();
         } else {
-            return AccessController.doPrivileged(new PrivilegedAction<ClassLoader>() {
-
-                @Override
-                public ClassLoader run() {
-                    return ClassLoader.getSystemClassLoader();
-                }
-            });
+            return AccessController.doPrivileged((PrivilegedAction<ClassLoader>) ClassLoader::getSystemClassLoader);
         }
     }
 

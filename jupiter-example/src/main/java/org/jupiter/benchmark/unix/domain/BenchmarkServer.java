@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.jupiter.benchmark.unix.domain;
 
 import io.netty.channel.unix.DomainSocketAddress;
+
 import org.jupiter.common.util.SystemPropertyUtil;
 import org.jupiter.monitor.MonitorServer;
 import org.jupiter.rpc.DefaultServer;

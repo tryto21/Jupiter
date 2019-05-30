@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.jupiter.transport.channel;
 
-import org.jupiter.serialization.io.OutputBuf;
-
 import java.net.SocketAddress;
+
+import org.jupiter.serialization.io.OutputBuf;
 
 /**
  * A nexus to a network socket or a component which is capable of I/O

@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.jupiter.transport.netty;
+
+import java.util.concurrent.ThreadFactory;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelOption;
@@ -25,12 +26,11 @@ import io.netty.channel.epoll.EpollEventLoopGroup;
 import io.netty.channel.epoll.EpollMode;
 import io.netty.channel.kqueue.KQueueEventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
+
 import org.jupiter.common.util.JConstants;
 import org.jupiter.transport.JConfig;
 import org.jupiter.transport.JConnection;
 import org.jupiter.transport.UnresolvedAddress;
-
-import java.util.concurrent.ThreadFactory;
 
 /**
  * jupiter
