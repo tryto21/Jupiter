@@ -90,16 +90,6 @@
                     <xsd:documentation><![CDATA[ Protostuff. ]]></xsd:documentation>
                 </xsd:annotation>
             </xsd:enumeration>
-            <xsd:enumeration value="hessian">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[ Hessian. ]]></xsd:documentation>
-                </xsd:annotation>
-            </xsd:enumeration>
-            <xsd:enumeration value="kryo">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[ Kryo. ]]></xsd:documentation>
-                </xsd:annotation>
-            </xsd:enumeration>
             <xsd:enumeration value="java">
                 <xsd:annotation>
                     <xsd:documentation><![CDATA[ Java. ]]></xsd:documentation>
